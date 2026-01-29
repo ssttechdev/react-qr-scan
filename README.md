@@ -1,6 +1,6 @@
-# React QR Reader [![npm version](https://badge.fury.io/js/react-qr-reader.svg)](https://badge.fury.io/js/react-qr-reader) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/react-qr-reader/react-qr-reader/badge.svg)](https://snyk.io/test/github/react-qr-reader/react-qr-reader)
+# React QR Scan [![npm version](https://badge.fury.io/js/react-qr-scan.svg)](https://badge.fury.io/js/react-qr-scan) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/ssttechdev/react-qr-scan/badge.svg)](https://snyk.io/test/github/ssttechdev/react-qr-scan)
 
-Fork From github.com/react-qr-reader/react-qr-reader
+Fork From https://github.com/ssttechdev/react-qr-scan
 
 ## Table of contents
 
@@ -37,13 +37,13 @@ You can install this library via NPM or YARN.
 ### NPM
 
 ```bash
-npm i react-qr-reader
+npm i react-qr-scan
 ```
 
 ### YARN
 
 ```bash
-yarn add react-qr-reader
+yarn add react-qr-scan
 ```
 
 ## Example Usage
@@ -52,7 +52,7 @@ After reading and performing the previous steps, you should be able to import th
 
 ```javascript
 import React, { useState } from 'react';
-import { QrReader } from 'react-qr-reader';
+import { QrReader } from 'react-qr-scan';
 
 const Test = (props) => {
   const [data, setData] = useState('No result');
@@ -141,4 +141,4 @@ If you want to contribute to this project see [contributing](https://github.com/
 
 ## License
 
-Distributed under the **MIT license**. See [LICENSE](https://github.com/react-qr-reader/react-qr-reader/blob/master/LICENSE) for more information.
+Distributed under the **MIT license**. See [LICENSE](https://github.com/ssttechdev/react-qr-scan/blob/master/LICENSE) for more information.

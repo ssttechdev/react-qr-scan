@@ -12,6 +12,17 @@ const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 export default [
   {
     input: 'src/index.ts',
+    onwarn(warning, warn) {
+      if (
+        warning.code === 'THIS_IS_UNDEFINED' &&
+        typeof warning.id === 'string' &&
+        warning.id.includes('@zxing')
+      ) {
+        return;
+      }
+
+      warn(warning);
+    },
     output: [
       {
         file: packageJson.main,
