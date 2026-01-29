@@ -28,7 +28,7 @@ This component has been tested in the following browsers:
 - Firefox Mac OS & Android
 - Safari Mac OS & IOS
 
-Since this library does internal use of hooks you need `React >= 16.8.0`.
+Since this library does internal use of hooks you need `React >= 18.0.0`.
 
 ## Installation
 
@@ -60,7 +60,14 @@ const Test = (props) => {
   return (
     <>
       <QrReader
-        onResult={(result, error) => {
+        onResult={(
+          result,
+          error,
+          codeReader,
+          location,
+          locationError,
+          deviceInfo
+        ) => {
           if (!!result) {
             setData(result?.text);
           }
@@ -68,7 +75,25 @@ const Test = (props) => {
           if (!!error) {
             console.info(error);
           }
+
+          if (!!location) {
+            console.info(
+              'Location:',
+              location.coords.latitude,
+              location.coords.longitude
+            );
+          }
+
+          if (!!locationError) {
+            console.info('Location error:', locationError);
+          }
+
+          if (!!deviceInfo) {
+            console.info('Device info:', deviceInfo);
+          }
         }}
+        enableLocation
+        enableDeviceInfo
         style={{ width: '100%' }}
       />
       <p>{data}</p>
@@ -87,6 +112,9 @@ The `QrReader` component has the following props:
 | onResult            | `function`                                                                                      | none                     | Scan event handler                                       |
 | videoId             | `string`                                                                                        | `video`                  | The ID for the video element                             |
 | scanDelay           | `number`                                                                                        | `500`                    | The scan period for the QR hook                          |
+| enableLocation      | `boolean`                                                                                       | `false`                  | Attach geolocation data to scan results                  |
+| locationOptions     | [PositionOptions](https://developer.mozilla.org/en-US/docs/Web/API/PositionOptions)             | none                     | Options for the geolocation API                          |
+| enableDeviceInfo    | `boolean`                                                                                       | `false`                  | Attach device info (heuristic) to scan results           |
 | ViewFinder          | component                                                                                       | none                     | ViewFinder component to rendering over the video element |
 | className           | string                                                                                          | none                     | ClassName for the container element.                     |
 | containerStyle      | object                                                                                          | none                     | Style object for the container element.                  |
@@ -97,6 +125,7 @@ The `QrReader` component has the following props:
 
 - Created by [@JodusNodus](https://github.com/JodusNodus) .
 - Revived thanks to [@JonatanSalas](https://github.com/JonatanSalas) and his company [@BlackBoxVision](https://github.com/BlackBoxVision) .
+- Updated by [@wsnugrho](https://github.com/ssttechdev)
 
 ## Browser Support
 
@@ -104,11 +133,11 @@ If you need to support older browsers, checkout [this guide](https://github.com/
 
 ## Issues
 
-Please, open an [issue](https://github.com/react-qr-reader/react-qr-reader/issues) following one of the issues templates. We will do our best to fix them.
+Please, open an [issue](https://github.com/ssttechdev/react-qr-scan/issues) following one of the issues templates. We will do our best to fix them.
 
 ## Contributing
 
-If you want to contribute to this project see [contributing](https://github.com/react-qr-reader/react-qr-reader/blob/master/CONTRIBUTING.md) for more information.
+If you want to contribute to this project see [contributing](https://github.com/ssttechdev/react-qr-scan/blob/master/CONTRIBUTING.md) for more information.
 
 ## License
 

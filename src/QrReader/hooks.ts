@@ -1,9 +1,9 @@
 import { MutableRefObject, useEffect, useRef } from 'react';
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser';
 
-import { UseQrReaderHook } from '../types';
+import { DeviceInfo, GeoLocation, UseQrReaderHook } from '../types';
 
-import { isMediaDevicesSupported, isValidType } from './utils';
+import { getDeviceInfo, isMediaDevicesSupported, isValidType } from './utils';
 
 // TODO: add support for debug logs
 export const useQrReader: UseQrReaderHook = ({
@@ -11,6 +11,9 @@ export const useQrReader: UseQrReaderHook = ({
   constraints: video,
   onResult,
   videoId,
+  enableLocation,
+  locationOptions,
+  enableDeviceInfo,
 }) => {
   const controlsRef: MutableRefObject<IScannerControls> = useRef(null);
 
@@ -18,6 +21,43 @@ export const useQrReader: UseQrReaderHook = ({
     const codeReader = new BrowserQRCodeReader(null, {
       delayBetweenScanAttempts,
     });
+    const getLocation = () =>
+      new Promise<{
+        location: GeoLocation | null;
+        locationError: GeolocationPositionError | Error | null;
+      }>((resolve) => {
+        if (!enableLocation || !navigator?.geolocation) {
+          resolve({ location: null, locationError: null });
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            resolve({
+              location: {
+                coords: {
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                  accuracy: position.coords.accuracy,
+                  altitude: position.coords.altitude,
+                  altitudeAccuracy: position.coords.altitudeAccuracy,
+                  heading: position.coords.heading,
+                  speed: position.coords.speed,
+                },
+                timestamp: position.timestamp,
+              },
+              locationError: null,
+            });
+          },
+          (error) => {
+            resolve({ location: null, locationError: error });
+          },
+          locationOptions
+        );
+      });
+
+    const getDevice = (): DeviceInfo | null =>
+      enableDeviceInfo ? getDeviceInfo() : null;
 
     if (
       !isMediaDevicesSupported() &&
@@ -33,7 +73,21 @@ export const useQrReader: UseQrReaderHook = ({
       codeReader
         .decodeFromConstraints({ video }, videoId, (result, error) => {
           if (isValidType(onResult, 'onResult', 'function')) {
-            onResult(result, error, codeReader);
+            if ((enableLocation || enableDeviceInfo) && result && !error) {
+              getLocation().then(({ location, locationError }) => {
+                onResult(
+                  result,
+                  error,
+                  codeReader,
+                  location,
+                  locationError,
+                  getDevice()
+                );
+              });
+              return;
+            }
+
+            onResult(result, error, codeReader, null, null, getDevice());
           }
         })
         .then((controls: IScannerControls) => (controlsRef.current = controls))

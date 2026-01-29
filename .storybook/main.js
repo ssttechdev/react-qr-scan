@@ -1,6 +1,10 @@
 module.exports = {
   stories: [`../stories/*.stories.tsx`],
   addons: ['@storybook/addon-essentials'],
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {},
+  },
   typescript: {
     check: false,
     checkOptions: {},
