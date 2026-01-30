@@ -15,15 +15,13 @@
     "noImplicitThis": false,
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": false,
-    "declaration": true,
+    "declaration": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "declarationDir": "types",
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": false
   },
   "include": ["src/**/*", "old.js"],
   "exclude": ["node_modules"]

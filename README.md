@@ -1,6 +1,6 @@
 # React QR Scan [![npm version](https://badge.fury.io/js/react-qr-scan.svg)](https://badge.fury.io/js/react-qr-scan) [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT) [![Known Vulnerabilities](https://snyk.io/test/github/ssttechdev/react-qr-scan/badge.svg)](https://snyk.io/test/github/ssttechdev/react-qr-scan)
 
-Fork From https://github.com/ssttechdev/react-qr-scan
+Repository: https://github.com/ssttechdev/react-qr-scan
 
 ## Table of contents
 
@@ -28,7 +28,7 @@ This component has been tested in the following browsers:
 - Firefox Mac OS & Android
 - Safari Mac OS & IOS
 
-Since this library does internal use of hooks you need `React >= 18.0.0`.
+Since this library does internal use of hooks you need `React >= 18.0.0` (React 19 supported).
 
 ## Installation
 
@@ -101,6 +101,11 @@ const Test = (props) => {
   );
 };
 ```
+
+## Notes
+
+- Geolocation requires user permission and only works on HTTPS or localhost.
+- `enableDeviceInfo` is heuristic and can be spoofed by the browser.
 
 ## Component API
 

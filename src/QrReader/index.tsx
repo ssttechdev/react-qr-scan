@@ -9,25 +9,27 @@ export const QrReader: React.FC<QrReaderProps> = ({
   videoContainerStyle,
   containerStyle,
   videoStyle,
-  constraints,
+  constraints = {
+    facingMode: 'user',
+  },
   ViewFinder,
-  scanDelay,
+  scanDelay = 500,
   className,
   onResult,
-  videoId,
+  videoId = 'video',
   enableLocation,
   locationOptions,
   enableDeviceInfo,
 }) => {
   useQrReader({
-    constraints,
-    scanDelay,
-    onResult,
-    videoId,
-    enableLocation,
-    locationOptions,
-    enableDeviceInfo,
-  });
+  constraints,
+  scanDelay,
+  onResult,
+  videoId,
+  enableLocation,
+  locationOptions,
+  enableDeviceInfo,
+});
 
   return (
     <section className={className} style={containerStyle}>
@@ -53,10 +55,3 @@ export const QrReader: React.FC<QrReaderProps> = ({
 };
 
 QrReader.displayName = 'QrReader';
-QrReader.defaultProps = {
-  constraints: {
-    facingMode: 'user',
-  },
-  videoId: 'video',
-  scanDelay: 500,
-};

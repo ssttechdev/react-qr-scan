@@ -1,11 +1,13 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import external from 'rollup-plugin-peer-deps-external';
 import dts from 'rollup-plugin-dts';
 import webWorkerLoader from 'rollup-plugin-web-worker-loader';
+import { createRequire } from 'node:module';
 
+const require = createRequire(import.meta.url);
 const packageJson = require('./package.json');
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -19,6 +21,13 @@ export default [
         warning.id.includes('@zxing')
       ) {
         return;
+      }
+
+      if (warning.code === 'CIRCULAR_DEPENDENCY') {
+        const ids = Array.isArray(warning.ids) ? warning.ids : [];
+        if (ids.some((id) => typeof id === 'string' && id.includes('@zxing'))) {
+          return;
+        }
       }
 
       warn(warning);
@@ -41,15 +50,20 @@ export default [
       external(),
       resolve({ extensions }),
       commonjs(),
-      typescript({ tsconfig: './tsconfig.json', module: 'esnext' }),
+      typescript({
+        tsconfig: './tsconfig.json',
+        module: 'esnext',
+        declaration: false,
+        emitDeclarationOnly: false,
+      }),
       terser(),
     ],
   },
   {
-    input: 'dist/esm/types/index.d.ts',
+    input: 'src/index.ts',
     output: [
       { file: 'dist/index.d.ts', format: 'esm', chunkFileNames: '[name].js' },
     ],
-    plugins: [dts()],
+    plugins: [dts({ tsconfig: './tsconfig.json' })],
   },
 ];
